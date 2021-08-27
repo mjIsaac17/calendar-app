@@ -13,3 +13,21 @@ body {
 .rbc-calendar {
   height: 100%;
 } */
+
+/*Floating action buttons*/
+.fab {
+  border-radius: 100%;
+  bottom: 1.5em;
+  font-size: 1rem;
+  padding: 1.5em;
+  position: fixed;
+  right: 1.5em;
+}
+
+.fab-danger {
+  bottom: 1.5em;
+  font-size: 1rem;
+  padding: 0.5em;
+  position: fixed;
+  left: 1.5em;
+}

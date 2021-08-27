@@ -1,35 +1,38 @@
-import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import React, { useState } from "react";
 import moment from "moment";
-import { Navbar } from "../ui/Navbar";
-import { CalendarEvent } from "./CalendarEvent";
+
+import { useDispatch, useSelector } from "react-redux";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+
 import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { messages } from "../../helpers/calendar-messages-es";
-import { useState } from "react";
+
 import { CalendarModal } from "./CalendarModal";
+import { CalendarEvent } from "./CalendarEvent";
+import { Navbar } from "../ui/Navbar";
+
+import { uiOpenModal } from "../../actions/ui";
+import { messages } from "../../helpers/calendar-messages-es";
+import { eventClearActive, eventSetActive } from "../../actions/events";
+import { AddNewFab } from "../ui/AddNewFab";
+import { DeleteEventFab } from "../ui/DeleteEventFab";
+
 // moment.locale("es");
 const localizer = momentLocalizer(moment);
 
-const events = [
-  {
-    title: "React course",
-    start: moment().toDate(), // = new Date()
-    end: moment().add(2, "hours").toDate(),
-    bgColor: "#fafafa",
-    user: {
-      _id: "1234",
-      name: "Alejandra",
-    },
-  },
-];
-
 export const CalendarScreen = () => {
+  const dispatch = useDispatch();
+  const [lastView, setLastView] = useState(
+    localStorage.getItem("lastView") || "month"
+  );
+
+  const { events, activeEvent } = useSelector((state) => state.calendar);
+
   const onDoubleClick = (e) => {
-    console.log(e);
+    dispatch(uiOpenModal());
   };
-  const onSelectEvent = (e) => {
-    console.log(e);
+  const onSelectEvent = (event) => {
+    dispatch(eventSetActive(event));
   };
 
   //Function triggered when we change the view (month, week, day)
@@ -39,9 +42,12 @@ export const CalendarScreen = () => {
     localStorage.setItem("lastView", selectedView);
   };
 
-  const [lastView, setLastView] = useState(
-    localStorage.getItem("lastView") || "month"
-  );
+  const onSelectSlot = (e) => {
+    // console.log(e);
+    // e contains the slot where the user clicked,
+    // this is usefull if we want to add an event where it was selected
+    dispatch(eventClearActive());
+  };
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
@@ -65,12 +71,16 @@ export const CalendarScreen = () => {
         eventPropGetter={eventStyleGetter}
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelectEvent}
+        onSelectSlot={onSelectSlot}
+        selectable={true}
         onView={onViewChange}
         view={lastView}
         components={{
           event: CalendarEvent,
         }}
       />
+      <AddNewFab />
+      {activeEvent && <DeleteEventFab />}
       <CalendarModal />
     </div>
   );
