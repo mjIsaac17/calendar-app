@@ -48,3 +48,7 @@
   font-weight: 600;
   text-decoration: none;
 }
+
+.noMargin {
+  margin: 0;
+}
