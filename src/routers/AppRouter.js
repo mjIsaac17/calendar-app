@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { startChecking } from "../actions/auth";
+import { checkingFinish, startChecking } from "../actions/auth";
 import { LoginScreen } from "../components/auth/LoginScreen";
 import { CalendarScreen } from "../components/calendar/CalendarScreen";
 import { PrivateRoute } from "./PrivateRoute";
@@ -12,8 +12,13 @@ export const AppRouter = () => {
   const { checking, uid } = useSelector((state) => state.auth);
 
   //Renew the token when the page loads
-  useEffect(async () => {
-    await dispatch(startChecking());
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!!token) {
+      dispatch(startChecking());
+    } else {
+      dispatch(checkingFinish());
+    }
   }, [dispatch]);
 
   if (checking) {
