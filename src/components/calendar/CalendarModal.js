@@ -10,8 +10,8 @@ import { uiCloseModal } from "../../actions/ui";
 import "../../styles/modal.css";
 import {
   eventClearActive,
-  eventAddNew,
-  eventUpdate,
+  eventStartAddNew,
+  eventStartUpdate,
 } from "../../actions/events";
 import { useEffect } from "react";
 
@@ -92,20 +92,10 @@ export const CalendarModal = () => {
     e.preventDefault();
 
     if (isFormValid()) {
-      console.log("valid");
       if (activeEvent) {
-        dispatch(eventUpdate(formValues));
+        dispatch(eventStartUpdate(formValues));
       } else {
-        dispatch(
-          eventAddNew({
-            ...formValues,
-            id: new Date().getTime(),
-            user: {
-              _id: "13",
-              name: "Isaac",
-            },
-          })
-        );
+        dispatch(eventStartAddNew(formValues));
       }
       dispatch(closeModal);
     }

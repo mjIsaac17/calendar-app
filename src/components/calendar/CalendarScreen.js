@@ -13,9 +13,14 @@ import { Navbar } from "../ui/Navbar";
 
 import { uiOpenModal } from "../../actions/ui";
 import { messages } from "../../helpers/calendar-messages-es";
-import { eventClearActive, eventSetActive } from "../../actions/events";
+import {
+  eventClearActive,
+  eventSetActive,
+  eventStartLoading,
+} from "../../actions/events";
 import { AddNewFab } from "../ui/AddNewFab";
 import { DeleteEventFab } from "../ui/DeleteEventFab";
+import { useEffect } from "react";
 
 // moment.locale("es");
 const localizer = momentLocalizer(moment);
@@ -27,6 +32,11 @@ export const CalendarScreen = () => {
   );
 
   const { events, activeEvent } = useSelector((state) => state.calendar);
+  const { uid } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(eventStartLoading());
+  }, [dispatch]);
 
   const onDoubleClick = (e) => {
     dispatch(uiOpenModal());
@@ -51,7 +61,7 @@ export const CalendarScreen = () => {
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
-      backgroundColor: "#367CF7",
+      backgroundColor: uid === event.user._id ? "#367CF7" : "#465555",
       borderRadious: "0px",
       opacity: 0.8,
       display: "block",

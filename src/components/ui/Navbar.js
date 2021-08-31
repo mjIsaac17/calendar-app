@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { logout } from "../../actions/auth";
+import { eventLogout } from "../../actions/events";
 
 export const Navbar = () => {
   const { name } = useSelector((state) => state.auth);
@@ -9,6 +10,7 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(eventLogout());
     return <Redirect to="/login" />;
   };
 

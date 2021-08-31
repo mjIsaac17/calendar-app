@@ -25,7 +25,7 @@ const fetchToken = (endpoint, data, method = "GET") => {
   } else {
     return fetch(url, {
       method,
-      headers: { "x-token": token },
+      headers: { "Content-Type": "application/json", "x-token": token },
       body: JSON.stringify(data),
     });
   }
