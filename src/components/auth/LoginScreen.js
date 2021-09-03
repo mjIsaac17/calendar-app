@@ -12,16 +12,16 @@ export const LoginScreen = () => {
   const [errorMessageRegister, setErrorMessageRegister] = useState("");
 
   const [formLoginValues, handleInputChange] = useForm({
-    lEmail: "isaac@gmail.com", //loginEmail
-    lPassword: "123456",
+    lEmail: "", //loginEmail
+    lPassword: "",
   });
   const { lEmail, lPassword } = formLoginValues;
 
   const [formRegisterValues, handleRegisterInputChange] = useForm({
-    rName: "Caasi",
-    rEmail: "caasi@gmail.com", //registerEmail
-    rPassword1: "123456",
-    rPassword2: "123456",
+    rName: "",
+    rEmail: "", //registerEmail
+    rPassword1: "",
+    rPassword2: "",
   });
 
   const { rName, rEmail, rPassword1, rPassword2 } = formRegisterValues;
@@ -122,7 +122,7 @@ export const LoginScreen = () => {
 
             <div className="form-group">
               <input
-                name="rPassword2 "
+                name="rPassword2"
                 value={rPassword2}
                 onChange={handleRegisterInputChange}
                 type="password"

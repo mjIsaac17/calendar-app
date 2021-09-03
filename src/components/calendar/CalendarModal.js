@@ -25,9 +25,10 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
   },
 };
-
-//Bind modal to your appElement
-Modal.setAppElement("#root"); //id root in index.html
+if (process.env.NODE_ENV !== "test") {
+  //Bind modal to your appElement
+  Modal.setAppElement("#root"); //id root in index.html
+}
 const now = moment().minutes(0).seconds(0).add(1, "hours");
 const nowPlusOne = now.clone().add(1, "hours");
 
@@ -97,7 +98,7 @@ export const CalendarModal = () => {
       } else {
         dispatch(eventStartAddNew(formValues));
       }
-      dispatch(closeModal);
+      dispatch(closeModal());
     }
   };
 
@@ -125,11 +126,12 @@ export const CalendarModal = () => {
       className="modal"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
+      ariaHideApp={!process.env.NODE_ENV === "test"}
     >
       <h1>{activeEvent ? "Update event" : "New event"}</h1>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
-        {formErrorMessage && (
+        {!!formErrorMessage && (
           <div className="alert alert-danger">
             <p className="text-center modal-noMargin">{formErrorMessage}</p>
           </div>
